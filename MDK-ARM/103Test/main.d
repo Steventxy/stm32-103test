@@ -33,3 +33,4 @@
 103test\main.o: ../User/key.h
 103test\main.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\stdio.h
 103test\main.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\string.h
+103test\main.o: ../User/delay.h
