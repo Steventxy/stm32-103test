@@ -27,10 +27,11 @@
 103test\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 103test\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 103test\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-103test\main.o: ../Inc/tim.h
 103test\main.o: ../Inc/usart.h
+103test\main.o: ../Inc/main.h
+103test\main.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\string.h
+103test\main.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+103test\main.o: ../Inc/tim.h
 103test\main.o: ../Inc/gpio.h
 103test\main.o: ../User/key.h
-103test\main.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\stdio.h
-103test\main.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\string.h
 103test\main.o: ../User/delay.h

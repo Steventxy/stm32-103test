@@ -33,7 +33,16 @@
 extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN Private defines */
+	 
+typedef struct
+{
+	uint8_t rx_buf[1];
+	uint8_t rx_dat[200];
+	int rx_index;
+	int rx_len;
+} UART_TypeDef;
 
+extern UART_TypeDef uart1;
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);

@@ -28,11 +28,12 @@
 /* USER CODE BEGIN Includes */
 #include "key.h"
 #include "delay.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-unsigned char rec_buf = 0;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -47,7 +48,7 @@ unsigned char rec_buf = 0;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+//KEY_TypeDef key_data;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,30 +67,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 	if(htim->Instance == TIM7)
 	{
-//		HAL_GPIO_TogglePin(led1_GPIO_Port,led1_Pin);
 		
 	}
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	uint8_t recBuf[64];
-	if(huart->Instance == USART1)
-	{
-		printf("收到数据:%s\r\n",recBuf);
-		if(rec_buf == 0xaa)
-		{
-			HAL_GPIO_TogglePin(led0_GPIO_Port,led0_Pin);
-			printf("LED0翻转");
-		}
-		else if(rec_buf == 0xbb)
-		{
-			HAL_GPIO_TogglePin(led1_GPIO_Port,led0_Pin);
-			printf("LED1翻转");
-		}
-		HAL_UART_Receive_IT(&huart1, &rec_buf, 1);
-	}
-}
 /* USER CODE END 0 */
 
 /**
@@ -125,11 +106,11 @@ int main(void)
   MX_TIM6_Init();
   MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
-	delay_init(8);
+	
 	HAL_TIM_Base_Start_IT(&htim6);
 	HAL_TIM_Base_Start_IT(&htim7);
-	HAL_UART_Receive_IT(&huart1, &rec_buf, 1);
-	HAL_UART_Transmit(&huart1,welcom,sizeof(welcom),1000);
+	HAL_UART_Receive_IT(&huart1, (uint8_t *)uart1.rx_buf, 1);
+	HAL_UART_Transmit(&huart1,welcom,strlen((char *)welcom),1000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -137,17 +118,31 @@ int main(void)
 	
   while (1)
   {
+		if(uart1.rx_index == 0 && uart1.rx_len != 0)
+		{
+			if(uart1.rx_dat[0] != '#' || uart1.rx_dat[uart1.rx_len - 2] != '$')
+				printf("数据格式错误！\r\n");
+			else 
+			{
+				printf("收到数据：");
+				uart1.rx_dat[0] = ' ';
+				uart1.rx_dat[uart1.rx_len - 2] = ' ';
+				HAL_UART_Transmit(&huart1,(uint8_t *)uart1.rx_dat,uart1.rx_len - 1,1000);
+				printf("\r\n");
+			}
+			uart1.rx_len = 0;
+		}
 		
 		if(keyup_data == KEY0_PRESS)
 		{
 			HAL_GPIO_TogglePin(led1_GPIO_Port,led1_Pin);
 		}
-		if(keydown_data == KEY1_PRESS && key_time >= 500)
+		if(key_tem == KEY1_PRESS && key_time >= 500)
 		{
 			if(key_time % 500 == 0)
 				HAL_GPIO_TogglePin(led0_GPIO_Port,led0_Pin);
 		}
-		if(key_tem == KEY2_PRESS&&key_time >= 1000)
+		if(key_tem == KEY2_PRESS && key_time >= 1000)
 		{
 			sprintf((char *)str_buf, "KEY2被按下超过一秒\r\n");
 			if(key_time % 1000 == 0)

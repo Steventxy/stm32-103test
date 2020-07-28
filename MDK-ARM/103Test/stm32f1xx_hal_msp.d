@@ -27,3 +27,7 @@
 103test\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 103test\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 103test\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+103test\stm32f1xx_hal_msp.o: ../Inc/usart.h
+103test\stm32f1xx_hal_msp.o: ../Inc/main.h
+103test\stm32f1xx_hal_msp.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\string.h
+103test\stm32f1xx_hal_msp.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\stdio.h

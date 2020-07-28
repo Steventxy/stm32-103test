@@ -26,7 +26,7 @@ void keyscan(char mode)
 				 if( (mode==0)&&(key_time>1) )//key_time>1按键值无效，这就是单按，如果mode为1就为连按
 						keydown_data=0;
 			}
-	    else     //去抖动      
+	    else                             //去抖动      
 			{
 				 key_time = 0;
 				 key_bak = key_tem;

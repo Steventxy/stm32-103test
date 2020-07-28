@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "stdio.h"
+#include "string.h"
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -108,12 +109,33 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+UART_TypeDef uart1;
 
 int fputc(int ch, FILE *f)
 {      
-	while((USART1->SR&0X40)==0);//循环发送,直到发送完毕   
+	while((USART1->SR&0X40)==0)
+		;//循环发送,直到发送完毕   
     USART1->DR = (uint8_t) ch;      
 	return ch;
+}
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == USART1)
+	{
+		if(uart1.rx_buf[0] != 0x0a)
+		{
+			uart1.rx_dat[uart1.rx_index] = uart1.rx_buf[0];
+			uart1.rx_index++;
+		}
+		else
+		{
+			uart1.rx_len = uart1.rx_index;
+			uart1.rx_index = 0;
+		}
+		HAL_UART_Receive_IT(&huart1, (uint8_t *)uart1.rx_buf, 1);
+	}
 }
 /* USER CODE END 1 */
 
