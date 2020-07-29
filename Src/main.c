@@ -82,6 +82,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint8_t welcom[] = "Hello World\r\n";
 	uint8_t str_buf[64];
+	uint16_t pwmval = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -108,9 +109,11 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 	delay_init(8);
+	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_TIM_Base_Start_IT(&htim6);
 	HAL_TIM_Base_Start_IT(&htim7);
 	HAL_UART_Receive_IT(&huart1, (uint8_t *)uart1.rx_buf, 1);
+	HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
 	HAL_UART_Transmit(&huart1,welcom,strlen((char *)welcom),1000);
   /* USER CODE END 2 */
 
@@ -145,15 +148,29 @@ int main(void)
 		}
 		if(key_tem == KEY2_PRESS && key_time >= 1000)
 		{
-			sprintf((char *)str_buf, "KEY2被按下超过一秒\r\n");
+			sprintf((char *)str_buf, "KEY2被按下%d秒\r\n",key_time/1000);
 			if(key_time % 1000 == 0)
+			{
 				HAL_UART_Transmit(&huart1, str_buf, strlen((char *)str_buf), 1000);
-			delay_us(100);
+				delay_us(500);
+			}
 		}
 		
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		while(pwmval < 300)
+		{
+			pwmval++;
+			TIM3->CCR2 = pwmval;
+			delay_ms(10);
+		}
+		while(pwmval)
+		{
+			pwmval--;
+			TIM3->CCR2 = pwmval;
+			delay_ms(10);
+		}
   }
   /* USER CODE END 3 */
 }
