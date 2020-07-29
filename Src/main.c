@@ -105,6 +105,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM6_Init();
   MX_TIM7_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 	delay_init(8);
 	HAL_TIM_Base_Start_IT(&htim6);
@@ -139,17 +140,17 @@ int main(void)
 		}
 		if(key_tem == KEY1_PRESS && key_time >= 500)
 		{
-			if(key_time % 500 == 0)
-				HAL_GPIO_TogglePin(led0_GPIO_Port,led0_Pin);
+//			if(key_time % 500 == 0)
+//				HAL_GPIO_TogglePin(led0_GPIO_Port,led0_Pin);
 		}
 		if(key_tem == KEY2_PRESS && key_time >= 1000)
 		{
 			sprintf((char *)str_buf, "KEY2被按下超过一秒\r\n");
 			if(key_time % 1000 == 0)
 				HAL_UART_Transmit(&huart1, str_buf, strlen((char *)str_buf), 1000);
-			delay_ms(100);
+			delay_us(100);
 		}
-
+		
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -192,6 +193,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  /** Enables the Clock Security System 
+  */
+  HAL_RCC_EnableCSS();
 }
 
 /* USER CODE BEGIN 4 */
