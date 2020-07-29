@@ -106,7 +106,7 @@ int main(void)
   MX_TIM6_Init();
   MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
-	
+	delay_init(8);
 	HAL_TIM_Base_Start_IT(&htim6);
 	HAL_TIM_Base_Start_IT(&htim7);
 	HAL_UART_Receive_IT(&huart1, (uint8_t *)uart1.rx_buf, 1);
@@ -147,6 +147,7 @@ int main(void)
 			sprintf((char *)str_buf, "KEY2被按下超过一秒\r\n");
 			if(key_time % 1000 == 0)
 				HAL_UART_Transmit(&huart1, str_buf, strlen((char *)str_buf), 1000);
+			delay_ms(100);
 		}
 
     /* USER CODE END WHILE */
