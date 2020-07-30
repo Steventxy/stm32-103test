@@ -159,17 +159,17 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		while(pwmval < 300)
+		while(pwmval < 800)
 		{
 			pwmval++;
 			TIM3->CCR2 = pwmval;
-			delay_ms(10);
+			delay_ms(2);
 		}
 		while(pwmval)
 		{
 			pwmval--;
 			TIM3->CCR2 = pwmval;
-			delay_ms(10);
+			delay_ms(2);
 		}
   }
   /* USER CODE END 3 */
