@@ -59,17 +59,6 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-	if(htim->Instance == TIM6)
-	{
-		keyscan(1);
-	}
-	if(htim->Instance == TIM7)
-	{
-		
-	}
-}
 
 /* USER CODE END 0 */
 
@@ -83,6 +72,7 @@ int main(void)
 	uint8_t welcom[] = "Hello World\r\n";
 	uint8_t str_buf[64];
 	uint16_t pwmval = 0;
+	long long temp = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -107,11 +97,14 @@ int main(void)
   MX_TIM6_Init();
   MX_TIM7_Init();
   MX_TIM3_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
 	delay_init(8);
 	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_TIM_Base_Start_IT(&htim6);
 	HAL_TIM_Base_Start_IT(&htim7);
+	HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
+	__HAL_TIM_ENABLE_IT(&htim5,TIM_IT_UPDATE);
 	HAL_UART_Receive_IT(&huart1, (uint8_t *)uart1.rx_buf, 1);
 	HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
 	HAL_UART_Transmit(&huart1,welcom,strlen((char *)welcom),1000);
@@ -170,6 +163,15 @@ int main(void)
 			pwmval--;
 			TIM3->CCR2 = pwmval;
 			delay_ms(2);
+		}
+		
+		if(TIM5CH1_CAPTURE_STA&0X80)        //成功捕获到了一次高电平
+		{
+			temp=TIM5CH1_CAPTURE_STA&0X3F; 
+			temp*=65536;		 	    	//溢出时间总和
+			temp+=TIM5CH1_CAPTURE_VAL;      //得到总的高电平时间
+			printf("HIGH:%lld us\r\n",temp);//打印总的高点平时间
+			TIM5CH1_CAPTURE_STA=0;          //开启下一次捕获
 		}
   }
   /* USER CODE END 3 */

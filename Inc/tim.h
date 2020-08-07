@@ -31,14 +31,17 @@
 /* USER CODE END Includes */
 
 extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim5;
 extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN Private defines */
-
+extern uint8_t  TIM5CH1_CAPTURE_STA;							// ‰»Î≤∂ªÒ◊¥Ã¨		    				
+extern uint16_t	TIM5CH1_CAPTURE_VAL;
 /* USER CODE END Private defines */
 
 void MX_TIM3_Init(void);
+void MX_TIM5_Init(void);
 void MX_TIM6_Init(void);
 void MX_TIM7_Init(void);
                         

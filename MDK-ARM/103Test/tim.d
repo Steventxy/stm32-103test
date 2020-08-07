@@ -32,3 +32,4 @@
 103test\tim.o: ../Inc/main.h
 103test\tim.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\string.h
 103test\tim.o: E:\ProgramFiles\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+103test\tim.o: ../User/key.h
